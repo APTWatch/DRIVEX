@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DriveX Grafana Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111217;
+      --surface: #181b1f;
+      --surface2: #1f2228;
+      --border: #2c3038;
+      --orange: #f46800;
+      --orange-dim: #c45700;
+      --text: #d8d9da;
+      --dim: #6e7078;
+      --white: #f0f1f2;
+      --red: #e02f44;
+      --green: #3eb15b;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle background texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(244,104,0,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(244,104,0,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* top bar mimicking real Grafana */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 40px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1rem;
+      gap: 0.6rem;
+      z-index: 10;
+    }
+    .topnav-logo {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .topnav-logo svg { width: 20px; height: 20px; }
+    .topnav-name {
+      font-size: 0.8rem; font-weight: 500; color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .topnav-version {
+      font-size: 0.65rem; color: var(--dim);
+      margin-left: 0.3rem;
+    }
+
+    /* login card */
+    .card {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 440px;
+      padding: 2.5rem 2.5rem 2rem;
+      margin-top: 40px;
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .grafana-icon {
+      width: 48px; height: 48px; margin: 0 auto 1rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-sub {
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.02em;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      padding: 0.6rem 0.85rem;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 2px rgba(244,104,0,0.15);
+    }
+
+    input::placeholder { color: var(--dim); }
+
+    .btn-login {
+      width: 100%;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.65rem;
+      cursor: pointer;
+      border-radius: 2px;
+      margin-top: 0.5rem;
+      transition: background 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .btn-login:hover { background: var(--orange-dim); }
+    .btn-login:active { transform: translateY(1px); }
+
+    .forgot {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 0.75rem;
+    }
+    .forgot a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+    .forgot a:hover { text-decoration: underline; }
+
+    /* error / success messages */
+    .alert {
+      padding: 0.65rem 0.85rem;
+      font-size: 0.78rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .alert.show { display: flex; }
+    .alert-error {
+      background: rgba(224,47,68,0.12);
+      border: 1px solid rgba(224,47,68,0.3);
+      color: #f07070;
+    }
+    .alert-success {
+      background: rgba(62,177,91,0.12);
+      border: 1px solid rgba(62,177,91,0.3);
+      color: #6ed98a;
+    }
+
+    /* post-login: fake dashboard reveal */
+    .dashboard {
+      display: none;
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      flex-direction: column;
+      animation: fadeIn 0.4s ease;
+    }
+    .dashboard.show { display: flex; }
+
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+    .dash-topnav {
+      height: 40px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 1rem; gap: 1rem; flex-shrink: 0;
+    }
+    .dash-topnav .nav-item {
+      font-size: 0.75rem; color: var(--dim);
+      padding: 0 0.5rem; height: 40px;
+      display: flex; align-items: center; cursor: pointer;
+    }
+    .dash-topnav .nav-item.active { color: var(--white); border-bottom: 2px solid var(--orange); }
+
+    .dash-body {
+      flex: 1; overflow: auto;
+      padding: 1.5rem 2rem;
+    }
+
+    .dash-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .dash-title {
+      font-size: 1.1rem; font-weight: 500; color: var(--white);
+    }
+
+    .flag-banner {
+      background: rgba(244,104,0,0.1);
+      border: 1px solid rgba(244,104,0,0.35);
+      padding: 1rem 1.5rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .flag-banner-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .flag-banner-title {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 0.3rem;
+    }
+    .flag-banner-flag {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem; font-weight: 600;
+      color: var(--white);
+      background: var(--surface2);
+      padding: 0.3rem 0.8rem;
+      display: inline-block;
+      margin-top: 0.4rem;
+      border: 1px solid var(--border);
+      letter-spacing: 0.05em;
+    }
+
+    /* fake panels */
+    .dash-panels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .dash-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+    }
+    .dp-label { font-size: 0.65rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    .dp-val   { font-size: 1.8rem; font-weight: 300; color: var(--white); }
+    .dp-unit  { font-size: 0.75rem; color: var(--dim); margin-left: 0.3rem; }
+
+    .dash-graph {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+      height: 200px;
+      display: flex; align-items: flex-end; gap: 4px;
+      padding-bottom: 2rem;
+      overflow: hidden;
+    }
+    .bar {
+      flex: 1; background: rgba(244,104,0,0.5);
+      border-radius: 2px 2px 0 0;
+      min-height: 8px;
+      transition: background 0.2s;
+    }
+    .bar:hover { background: var(--orange); }
+
+    /* shake animation for wrong password */
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-8px);}
+      40%{transform:translateX(8px);}
+      60%{transform:translateX(-5px);}
+      80%{transform:translateX(5px);}
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--dim);
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="topnav">
+  <div class="topnav-logo">
+    <img src="graf.png" alt="Grafana" style="width:20px;height:20px;object-fit:contain;"/>
+    <span class="topnav-name">Grafana</span>
+  </div>
+</div>
+
+
+<div class="card" id="loginCard">
+  <div class="card-header">
+    <img src="graf.png" alt="Grafana" class="grafana-icon" style="object-fit:contain;"/>
+    <div class="card-title">Welcome to Grafana</div>
+    <div class="card-sub">DriveX Internal Monitoring · Sign in to continue</div>
+  </div>
+
+  <div class="alert alert-error" id="errorAlert">
+    <span>⚠</span>
+    <span id="errorMsg">Invalid username or password.</span>
+  </div>
+
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="email or username" autocomplete="off" spellcheck="false"/>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="password"/>
+  </div>
+
+  <button class="btn-login" id="loginBtn" onclick="doLogin()">Log in</button>
+
+  <div class="forgot"><a href="#">Forgot your password?</a></div>
+
+  <div class="divider"></div>
+  <div class="footer-note">DriveX Fleet Monitoring System · Unauthorized access is prohibited</div>
+</div>
+
+
+<div class="dashboard" id="dashboard">
+  <div class="dash-topnav">
+    <div class="topnav-logo" style="margin-right:1rem;">
+      <img src="graf.png" alt="Grafana" style="width:20px;height:20px;object-fit:contain;"/>
+      <span style="font-size:0.8rem;color:#f0f1f2;font-weight:500;">Grafana</span>
+    </div>
+    <div class="nav-item active">Home</div>
+    <div class="nav-item">Dashboards</div>
+    <div class="nav-item">Explore</div>
+    <div class="nav-item">Alerting</div>
+    <div style="margin-left:auto;font-size:0.7rem;color:#6e7078;">admin <span style="color:#f46800;">●</span></div>
+  </div>
+
+  <div class="dash-body">
+    <div class="dash-header">
+      <div class="dash-title">DriveX Fleet Overview</div>
+      <div style="font-size:0.72rem;color:#6e7078;">Last 24 hours &nbsp;▾</div>
+    </div>
+
+    
+    <div class="flag-banner">
+      <div class="flag-banner-icon"></div>
+      <div>
+        <div class="flag-banner-title">Access Granted — Default Credentials Accepted</div>
+        <div style="font-size:0.78rem;color:#d8d9da;line-height:1.6;">
+          You logged in using Grafana's well-known default credentials. Here is your flag:
+        </div>
+        <div class="flag-banner-flag" id="flagText"></div>
+      </div>
+    </div>
+
+    
+    <div class="dash-panels">
+      <div class="dash-panel">
+        <div class="dp-label">Active Vehicles</div>
+        <div class="dp-val">14<span class="dp-unit">units</span></div>
+      </div>
+      <div class="dash-panel">
+        <div class="dp-label">Avg Speed</div>
+        <div class="dp-val">62<span class="dp-unit">km/h</span></div>
+      </div>
+      <div class="dash-panel">
+        <div class="dp-label">Fuel Alerts</div>
+        <div class="dp-val" style="color:#f46800;">3<span class="dp-unit">critical</span></div>
+      </div>
+    </div>
+
+    
+    <div class="dash-graph" id="graph"></div>
+  </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

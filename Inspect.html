@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Web CTF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ec1414 0%, #ffffff 100%);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #ea0909;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚩 Find the Flag</h1>
+        <p>The flag is hidden in the HTML. Inspect the page source!</p>
+        <input type="text" id="flagInput" placeholder="Enter the flag">
+        <button onclick="checkFlag()">Submit</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <!-- The flag is hidden here! -->
+    <!-- Flag: MMDC{inspect_element_is_your_friend} -->
+
+    <script>
+        function checkFlag() {
+            const input = document.getElementById('flagInput').value;
+            const correctFlag = 'MMDC{inspect_element_is_your_friend}';
+            const messageEl = document.getElementById('message');
+            
+            if (input === correctFlag) {
+                messageEl.textContent = 'Correct! You found the flag!';
+                messageEl.style.color = 'green';
+            } else {
+                messageEl.textContent = 'Wrong flag. Try inspecting the page!';
+                messageEl.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

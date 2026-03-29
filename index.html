@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DRIVEX — Premium Car Rentals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f2ee;
+      --red: #e82b2b;
+      --gray: #1a1a1a;
+      --mid: #555;
+      --light: #aaa;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(245,242,238,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 0.15em;
+      color: var(--black);
+    }
+    .nav-logo span { color: var(--red); }
+
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--mid);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    .nav-cta {
+      background: var(--black);
+      color: var(--white) !important;
+      padding: 0.55rem 1.4rem;
+      font-weight: 500 !important;
+    }
+    .nav-cta:hover { background: var(--red) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem 4rem 4rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 32px; height: 1px; background: var(--red);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 7vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      color: var(--black);
+      margin-bottom: 1.8rem;
+    }
+    .hero-title .outline {
+      -webkit-text-stroke: 2px var(--black);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--mid);
+      max-width: 380px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; align-items: center;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none; cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: #c0201e; transform: translateY(-2px); }
+
+    .btn-ghost {
+      color: var(--black);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: gap 0.2s;
+    }
+    .btn-ghost:hover { gap: 0.9rem; }
+    .btn-ghost::after { content: '→'; }
+
+    .hero-stats {
+      display: flex; gap: 3rem;
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--black);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .hero-right {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 50%, #1a0505 0%, var(--black) 70%);
+    }
+
+    .hero-bg-text {
+      position: relative; z-index: 2;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 12vw, 14rem);
+      color: rgba(255,255,255,0.04);
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    .hero-car-svg {
+      position: absolute; z-index: 3;
+      width: 88%; max-width: 500px;
+    }
+
+    .hero-tag {
+      position: absolute; bottom: 2rem; right: 2rem; z-index: 4;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ── BOOKING BAR ── */
+    .booking-bar {
+      background: var(--black);
+      padding: 2.5rem 4rem;
+      display: flex; gap: 0; align-items: stretch;
+    }
+    .booking-field {
+      flex: 1; padding: 0.8rem 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .booking-field:last-of-type { border-right: none; }
+    .booking-field label {
+      display: block; font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem;
+    }
+    .booking-field input, .booking-field select {
+      background: transparent; border: none; outline: none;
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; width: 100%;
+    }
+    .booking-field select option { background: var(--gray); }
+    .booking-submit {
+      background: var(--red); color: var(--white); border: none;
+      padding: 0 2.5rem; font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.15em; cursor: pointer;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .booking-submit:hover { background: #c0201e; }
+
+    /* ── FLEET ── */
+    .fleet { padding: 7rem 4rem; }
+
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3.5rem;
+    }
+    .section-eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 4rem); letter-spacing: 0.05em; line-height: 1;
+    }
+    .section-link {
+      color: var(--mid); font-size: 0.8rem; letter-spacing: 0.1em;
+      text-decoration: none; text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s, gap 0.2s;
+    }
+    .section-link:hover { color: var(--black); gap: 0.9rem; }
+    .section-link::after { content: '→'; }
+
+    .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+    .car-card { background: #f0ece8; overflow: hidden; cursor: pointer; transition: transform 0.3s; }
+    .car-card:hover { transform: translateY(-6px); }
+    .car-card-img {
+      height: 180px; background: var(--black);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .car-card-img svg { width: 82%; transition: transform 0.4s; }
+    .car-card:hover .car-card-img svg { transform: scale(1.06); }
+    .car-card-body { padding: 1.4rem; }
+    .car-category { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 0.4rem; }
+    .car-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+    .car-specs { display: flex; gap: 1.2rem; font-size: 0.75rem; color: var(--mid); margin-bottom: 1.2rem; }
+    .car-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .car-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.05em; }
+    .car-price small { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; font-weight: 300; color: var(--mid); letter-spacing: 0.1em; }
+    .car-btn {
+      background: var(--black); color: var(--white); border: none;
+      padding: 0.5rem 1.1rem; font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer; transition: background 0.2s;
+    }
+    .car-btn:hover { background: var(--red); }
+
+    /* ── WHY US ── */
+    .why {
+      background: var(--black); color: var(--white); padding: 7rem 4rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .why-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 5vw, 5rem); letter-spacing: 0.05em; line-height: 1; margin-bottom: 1.5rem; }
+    .why-title .accent { color: var(--red); }
+    .why-desc { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.9; max-width: 360px; }
+    .why-features { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .feature-item { padding: 1.8rem; border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.3s; }
+    .feature-item:hover { border-color: var(--red); }
+    .feature-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .feature-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gray); color: rgba(255,255,255,0.4);
+      padding: 3rem 4rem; display: flex;
+      align-items: center; justify-content: space-between;
+      font-size: 0.75rem; letter-spacing: 0.08em;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.15em; color: var(--white); }
+    .footer-logo span { color: var(--red); }
+    footer nav a {
+      color: rgba(255,255,255,0.35); text-decoration: none;
+      margin-left: 2rem; transition: color 0.2s;
+      text-transform: uppercase; font-size: 0.7rem;
+    }
+    footer nav a:hover { color: var(--white); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+    .hero-title   { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero-sub     { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+    .hero-stats   { animation: fadeUp 0.6s 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DRIVE<span>X</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Fleet</a></li>
+    <li><a href="#">Locations</a></li>
+    <li><a href="#">Deals</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Premium Car Rental</div>
+    <h1 class="hero-title">
+      THE ROAD<br/>
+      <span class="outline">AWAITS</span><br/>
+      YOU.
+    </h1>
+    <p class="hero-sub">
+      Choose from our fleet of meticulously maintained vehicles.
+      No hidden fees, no surprises — just the open road.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Browse Fleet</a>
+      <a href="#" class="btn-ghost">How it works</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num">120+</span><span class="stat-label">Vehicles</span></div>
+      <div><span class="stat-num">18</span><span class="stat-label">Locations</span></div>
+      <div><span class="stat-num">4.9★</span><span class="stat-label">Rating</span></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-bg-text">CAR</div>
+    <svg class="hero-car-svg" viewBox="0 0 600 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M80 140 L100 90 Q140 50 220 45 L380 45 Q450 45 490 90 L520 140 Z" fill="#d8d8d8"/>
+      <path d="M160 90 Q190 55 240 50 L360 50 Q400 55 430 90 Z" fill="#c0c0c0"/>
+      <path d="M175 88 Q195 62 235 58 L295 58 L295 88 Z" fill="#7aaecc" opacity="0.85"/>
+      <path d="M305 88 L305 58 L365 58 Q398 62 420 88 Z" fill="#7aaecc" opacity="0.85"/>
+      <line x1="300" y1="58" x2="300" y2="90" stroke="#999" stroke-width="3"/>
+      <line x1="285" y1="90" x2="270" y2="140" stroke="#aaa" stroke-width="2"/>
+      <line x1="315" y1="90" x2="330" y2="140" stroke="#aaa" stroke-width="2"/>
+      <rect x="80" y="138" width="440" height="12" rx="4" fill="#999"/>
+      <path d="M80 140 Q60 145 55 158 L100 158" fill="#bbb"/>
+      <path d="M520 140 Q540 145 545 158 L500 158" fill="#bbb"/>
+      <circle cx="160" cy="165" r="28" fill="#222"/>
+      <circle cx="160" cy="165" r="18" fill="#666"/>
+      <circle cx="160" cy="165" r="8" fill="#aaa"/>
+      <circle cx="440" cy="165" r="28" fill="#222"/>
+      <circle cx="440" cy="165" r="18" fill="#666"/>
+      <circle cx="440" cy="165" r="8" fill="#aaa"/>
+      <rect x="86" y="108" width="28" height="14" rx="3" fill="#ffee88" opacity="0.9"/>
+      <rect x="488" y="108" width="24" height="14" rx="3" fill="#ff4444" opacity="0.8"/>
+    </svg>
+    <div class="hero-tag">2024 Fleet Available</div>
+  </div>
+</section>
+
+<!-- BOOKING BAR -->
+<div class="booking-bar">
+  <div class="booking-field">
+    <label>Pick-up Location</label>
+    <input type="text" placeholder="City or Airport"/>
+  </div>
+  <div class="booking-field">
+    <label>Pick-up Date</label>
+    <input type="date"/>
+  </div>
+  <div class="booking-field">
+    <label>Return Date</label>
+    <input type="date"/>
+  </div>
+  <div class="booking-field">
+    <label>Vehicle Type</label>
+    <select>
+      <option>Any</option>
+      <option>Economy</option>
+      <option>Sedan</option>
+      <option>SUV</option>
+      <option>Luxury</option>
+      <option>Van</option>
+    </select>
+  </div>
+  <button class="booking-submit">Search Cars</button>
+</div>
+
+<!-- FLEET -->
+<section class="fleet">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Our Vehicles</div>
+      <h2 class="section-title">Popular Fleet</h2>
+    </div>
+    <a href="#" class="section-link">View All Cars</a>
+  </div>
+  <div class="fleet-grid">
+    <div class="car-card">
+      <div class="car-card-img">
+        <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 108 L68 68 Q95 40 160 38 L240 38 Q300 38 332 68 L350 108 Z" fill="#cccccc"/>
+          <path d="M108 68 Q125 48 160 44 L240 44 Q270 48 292 68 Z" fill="#b8b8b8"/>
+          <path d="M118 66 Q132 50 160 46 L196 46 L196 66 Z" fill="#6699bb" opacity="0.8"/>
+          <path d="M204 66 L204 46 L240 46 Q264 50 280 66 Z" fill="#6699bb" opacity="0.8"/>
+          <rect x="50" y="106" width="300" height="10" rx="3" fill="#888"/>
+          <circle cx="110" cy="124" r="20" fill="#222"/><circle cx="110" cy="124" r="12" fill="#666"/>
+          <circle cx="290" cy="124" r="20" fill="#222"/><circle cx="290" cy="124" r="12" fill="#666"/>
+          <rect x="54" y="80" width="22" height="12" rx="2" fill="#ffee88" opacity="0.9"/>
+          <rect x="324" y="80" width="20" height="12" rx="2" fill="#ff4444" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-category">Economy</div>
+        <div class="car-name">Toyota Vios</div>
+        <div class="car-specs"><span>🧍 5 seats</span><span>⚙️ Auto</span><span>⛽ Petrol</span></div>
+        <div class="car-footer">
+          <div class="car-price">₱1,200 <small>/ day</small></div>
+          <button class="car-btn">Rent Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="car-card">
+      <div class="car-card-img" style="background:#111;">
+        <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 108 L60 62 Q90 32 155 30 L245 30 Q310 32 340 62 L360 108 Z" fill="#555"/>
+          <path d="M100 62 Q125 38 165 34 L235 34 Q268 38 290 62 Z" fill="#444"/>
+          <path d="M112 60 Q130 42 165 36 L198 36 L198 60 Z" fill="#4488aa" opacity="0.8"/>
+          <path d="M202 60 L202 36 L235 36 Q268 42 288 60 Z" fill="#4488aa" opacity="0.8"/>
+          <rect x="40" y="106" width="320" height="12" rx="4" fill="#333"/>
+          <circle cx="105" cy="126" r="22" fill="#111"/><circle cx="105" cy="126" r="14" fill="#888"/>
+          <circle cx="295" cy="126" r="22" fill="#111"/><circle cx="295" cy="126" r="14" fill="#888"/>
+          <rect x="44" y="80" width="26" height="14" rx="3" fill="#ffee44" opacity="0.9"/>
+          <rect x="330" y="80" width="24" height="14" rx="3" fill="#ff3333" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-category">SUV</div>
+        <div class="car-name">Ford Everest</div>
+        <div class="car-specs"><span>🧍 7 seats</span><span>⚙️ Auto</span><span>⛽ Diesel</span></div>
+        <div class="car-footer">
+          <div class="car-price">₱3,500 <small>/ day</small></div>
+          <button class="car-btn">Rent Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="car-card">
+      <div class="car-card-img" style="background:#0d0d0d;">
+        <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M55 106 L72 60 Q100 28 165 26 L235 26 Q300 28 328 60 L345 106 Z" fill="#2a2a2a"/>
+          <path d="M110 60 Q132 34 168 30 L232 30 Q268 34 290 60 Z" fill="#1a1a1a"/>
+          <path d="M118 58 Q136 36 168 32 L198 32 L198 58 Z" fill="#3366aa" opacity="0.85"/>
+          <path d="M202 58 L202 32 L232 32 Q264 36 282 58 Z" fill="#3366aa" opacity="0.85"/>
+          <rect x="55" y="104" width="290" height="11" rx="3" fill="#111"/>
+          <circle cx="108" cy="123" r="21" fill="#0a0a0a"/><circle cx="108" cy="123" r="13" fill="#aaa"/>
+          <circle cx="292" cy="123" r="21" fill="#0a0a0a"/><circle cx="292" cy="123" r="13" fill="#aaa"/>
+          <rect x="57" y="76" width="24" height="14" rx="3" fill="#ffee66" opacity="0.95"/>
+          <rect x="318" y="76" width="24" height="14" rx="3" fill="#ff2222" opacity="0.9"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-category">Luxury</div>
+        <div class="car-name">BMW 5 Series</div>
+        <div class="car-specs"><span>🧍 5 seats</span><span>⚙️ Auto</span><span>⛽ Petrol</span></div>
+        <div class="car-footer">
+          <div class="car-price">₱6,800 <small>/ day</small></div>
+          <button class="car-btn">Rent Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+  <div>
+    <h2 class="why-title">WHY CHOOSE <span class="accent">DRIVEX?</span></h2>
+    <p class="why-desc">
+      We've been putting drivers on the road since 2010.
+      Every rental comes with 24/7 roadside assistance,
+      flexible cancellations, and zero surprise charges at pickup.
+    </p>
+  </div>
+  <div class="why-features">
+    <div class="feature-item">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-name">Full Insurance</div>
+      <div class="feature-desc">Comprehensive coverage included. Drive with total peace of mind.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📍</div>
+      <div class="feature-name">18 Locations</div>
+      <div class="feature-desc">Major airports and city centers nationwide. Always close to you.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔑</div>
+      <div class="feature-name">Instant Booking</div>
+      <div class="feature-desc">Book in under 2 minutes. No paperwork, no queues at pickup.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">☎️</div>
+      <div class="feature-name">24/7 Support</div>
+      <div class="feature-desc">Real humans on the line, any hour, any day. We've got you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DRIVE<span>X</span></div>
+  <div style="font-size:0.7rem;">© 2024 DriveX Car Rentals. All rights reserved.</div>
+  <nav>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+    <a href="#">Sitemap</a>
+  </nav>
+</footer>
+
+</body>
+</html>

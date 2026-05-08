@@ -913,7 +913,7 @@
       { k: "telemetry_salt",   v: "dGVsZW1ldHJ5X3NhbHRfYWJjZGVmZ2g=" },
       { k: "session_pepper",   v: "c2Vzc2lvbl9wZXBwZXJfMTIzNDU2Nzg=" },
       { k: "geo_api_key",      v: "Z2VvX2FwaV9rZXlfcHJvZF94eXoxMjM=" },
-      { k: "flag",             v: "TU1EQ3sxbV9IM3IzfQ=="},
+      { k: "flag",             v: "Q1RGezFtX0gzcjN9"},
       { k: "pricing_hmac",     v: "cHJpY2luZ19obWFjX3NlY3JldF9rZXk=" },
       { k: "webhook_secret",   v: "d2ViaG9va19zaGFyZWRfc2VjcmV0X3Yx" },
       { k: "cdn_signing_key",  v: "Y2RuX3NpZ25pbmdfa2V5XzIwMjRfcHJv" }

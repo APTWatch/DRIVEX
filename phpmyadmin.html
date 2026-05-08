@@ -83,28 +83,29 @@
         <div id="message"></div>
     </div>
 
-    <script>
-        
-        const encodedFlag = [10, 29, 7, 50, 10, 25, 39, 46, 125, 61, 58, 22, 25, 39, 22, 47, 120, 39, 45, 120, 39, 46, 22, 36, 122, 52];
-        const xorKey = 73;
+<script>
+    const encodedFlag = [10, 29, 15, 50, 10, 121, 39, 46, 125, 61, 58, 22, 121, 39, 22, 47, 120, 39, 45, 120, 39, 46, 22, 36, 122, 52];
+    const xorKey = 73;
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const messageDiv = document.getElementById('message');
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            if (username === 'root' && password === '') {
-                const flag = encodedFlag.map(function(code) {
-                    return String.fromCharCode(code ^ xorKey);
-                }).join('');
-                messageDiv.className = 'message success';
-                messageDiv.innerHTML = '<strong>Login Successful!</strong><br>Flag: ' + flag;
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.innerHTML = '<strong>Login Failed</strong><br>Invalid credentials';
-            }
-        });
-    </script>
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const messageDiv = document.getElementById('message');
+
+        if (username === 'root' && password === '') {
+            const flag = encodedFlag.map(function(code) {
+                return String.fromCharCode(code ^ xorKey);
+            }).join('');
+
+            messageDiv.className = 'message success';
+            messageDiv.innerHTML = '<strong>Login Successful!</strong><br>Flag: ' + flag;
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.innerHTML = '<strong>Login Failed</strong><br>Invalid credentials';
+        }
+    });
+</script>
 </body>
 </html>

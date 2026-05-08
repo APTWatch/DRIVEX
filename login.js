@@ -14,13 +14,14 @@ function buildHiddenFlag() {
 
   const encoded = [
     84, 67, 81, 108, 115, 114, 113, 118, 98, 123,
-    99, 72, 112, 101, 118, 113, 118, 121, 112, 72,
-    116, 101, 114, 115, 100, 114, 121, 126, 114, 123,
-    99, 126, 106
+    99, 72, 112, 101, 118, 113, 118, 121, 118, 72,
+    116, 101, 114, 115, 114, 121, 99, 126, 118, 123,
+    99, 100, 106
   ];
 
   return String.fromCharCode(...encoded.map(v => v ^ key));
 }
+
 
 function doLogin() {
   const user = document.getElementById('username').value.trim();

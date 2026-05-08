@@ -7,4 +7,4 @@ Disallow: /api/
 Disallow: /backup/
 
 # dev note: don't forget to delete this before launch
-# flag: MMDC{stop_looking_robot}
+# flag: CTF{stop_looking_robot}
